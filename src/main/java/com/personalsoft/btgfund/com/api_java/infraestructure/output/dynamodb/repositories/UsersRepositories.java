@@ -38,11 +38,12 @@ public class UsersRepositories {
         return results.isEmpty() ? null : results.get(0);
     }
 
-    public void save(Users user) {
+    public Users  save(Users user) {
         DynamoDBMapperConfig config = new DynamoDBMapperConfig.Builder()
                 .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
 
         dynamoDBMapper.save(user, config);
+        return dynamoDBMapper.load(Users.class, user.getUserId(), config);
     }
 }

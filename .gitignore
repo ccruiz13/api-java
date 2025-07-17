@@ -35,3 +35,14 @@ replay_pid*
 # OS-specific files
 .DS_Store
 Thumbs.db
+*.original
+*.lst
+*.lst
+*.txt
+*.xml
+/target
+/target
+/target
+*.original
+/target
+/.idea
