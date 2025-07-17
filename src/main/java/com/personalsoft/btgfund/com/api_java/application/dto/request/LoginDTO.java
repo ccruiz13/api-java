@@ -1,4 +1,4 @@
-package com.personalsoft.btgfund.com.api_java.domain.model.response;
+package com.personalsoft.btgfund.com.api_java.application.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Login {
+public class LoginDTO {
 
-    private String userId;
     private String email;
-    private String role;
-    private String token;
+    private String password;
 }
