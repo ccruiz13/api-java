@@ -36,7 +36,6 @@ public class ValidationFilter extends BasicAuthenticationFilter {
     private final ObjectMapper objectMapper;
     private final IUserAdapter userAdapter;
 
-    private static final String ERROR = "error";
 
     public ValidationFilter(AuthenticationManager authenticationManager,
                             ObjectMapper objectMapper,
@@ -88,6 +87,5 @@ public class ValidationFilter extends BasicAuthenticationFilter {
         }
 
     }
-
 
 }

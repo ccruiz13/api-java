@@ -12,4 +12,7 @@ public interface TokenJwtConfig {
     String HEADER_AUTHORIZATION = "Authorization";
 
     String CONTENT_TYPE = "application/json";
+
+    String ERROR = "error";
+    String RUTA = "ruta";
 }

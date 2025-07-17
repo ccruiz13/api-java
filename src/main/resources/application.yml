@@ -7,3 +7,6 @@ aws:
   region: ${AWS_REGION}
   dynamodb:
     table-name: ${DYNAMO_TABLE_NAME}
+
+appDescripcion: Api para crear usuarios con sus respectivos roles
+appVersion: 1.0.0

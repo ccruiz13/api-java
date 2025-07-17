@@ -1,5 +1,7 @@
 package com.personalsoft.btgfund.com.api_java.infraestructure.commons.mapper;
 
+import com.personalsoft.btgfund.com.api_java.application.dto.response.LoginDTOResponse;
+import com.personalsoft.btgfund.com.api_java.domain.model.response.LoginResponseModel;
 import com.personalsoft.btgfund.com.api_java.infraestructure.input.response.ErrorResponseDTO;
 import com.personalsoft.btgfund.com.api_java.infraestructure.input.response.SuccessResponseDTO;
 
@@ -25,5 +27,12 @@ public class ResponseMapper {
                 .message(message)
                 .error(error)
                 .build();
+    }
+
+    public static LoginDTOResponse toDto(LoginResponseModel model) {
+        return new LoginDTOResponse(model.getUserId(),
+                model.getEmail(),
+                model.getRole(),
+                model.getToken());
     }
 }

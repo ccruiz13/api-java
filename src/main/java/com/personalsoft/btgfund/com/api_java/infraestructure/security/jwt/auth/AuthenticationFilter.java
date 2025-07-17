@@ -3,6 +3,7 @@ package com.personalsoft.btgfund.com.api_java.infraestructure.security.jwt.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.personalsoft.btgfund.com.api_java.application.dto.request.LoginDTO;
 import com.personalsoft.btgfund.com.api_java.application.dto.response.LoginDTOResponse;
+import com.personalsoft.btgfund.com.api_java.domain.model.response.LoginResponseModel;
 import com.personalsoft.btgfund.com.api_java.infraestructure.commons.constants.MessagesResponse;
 import com.personalsoft.btgfund.com.api_java.infraestructure.commons.mapper.ResponseMapper;
 import com.personalsoft.btgfund.com.api_java.infraestructure.commons.utils.ResponseUtils;
@@ -38,15 +39,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private static final String IDUSER = "idUser";
     private static final String ROLE = "role";
     private static final String USERNAME = "username";
-    private static final String TOKEN = "token";
 
-    public Authentication authenticateUser(LoginDTO user) throws AuthenticationException {
+    public Authentication authenticateUser(String email, String password) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+                new UsernamePasswordAuthenticationToken(email, password);
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    public LoginDTOResponse generateTokenResponse(Authentication authResult) {
+    public LoginResponseModel generateTokenResponse(Authentication authResult) {
         try {
             AuthenticatedUser user = (AuthenticatedUser) authResult.getPrincipal();
             String username = user.getUsername();
@@ -67,13 +67,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                     .signWith(TokenJwtConfig.SECRET_KEY)
                     .compact();
 
-            return LoginDTOResponse
-                    .builder()
-                    .userId(user.getIdUser())
-                    .email(username)
-                    .role(user.getIdUser())
-                    .token(token)
-                    .build();
+            return new LoginResponseModel(user.getIdUser(), username, username, token);
         } catch (Exception e) {
             throw new NoDataFoundException(MessagesResponse.INVALID_TOKEN_ERROR.getMessage(), e);
         }
@@ -84,7 +78,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             throws AuthenticationException {
         try {
             LoginDTO user = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
-            return authenticateUser(user);
+            return authenticateUser(user.getEmail(), user.getPassword());
         } catch (IOException e) {
             throw new NoDataFoundException(MessagesResponse.INVALID_CREDENTIALS_ERROR.getMessage(), e);
         }
@@ -93,11 +87,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        LoginDTOResponse body = generateTokenResponse(authResult);
+        LoginDTOResponse body = ResponseMapper.toDto(generateTokenResponse(authResult));
         String token = TokenJwtConfig.PREFIX_TOKEN + body.getToken();
-
         SuccessResponseDTO responseDTO = ResponseMapper.buildSuccess(MessagesResponse.LOGIN_SUCCESS_MESSAGE.getMessage(), body);
-
         ResponseUtils.write(response, responseDTO, HttpStatus.OK.value(), token);
     }
 }
