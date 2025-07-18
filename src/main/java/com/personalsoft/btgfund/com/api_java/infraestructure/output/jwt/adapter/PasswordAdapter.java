@@ -5,7 +5,9 @@ import com.personalsoft.btgfund.com.api_java.infraestructure.commons.constants.M
 import com.personalsoft.btgfund.com.api_java.infraestructure.exception.NoDataFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class PasswordAdapter implements IPasswordAdapter {
 

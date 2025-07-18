@@ -7,10 +7,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ValidationMessage {
 
+    EMAIL_ALREADY_EXISTS("El correo electrónico ya está registrado."),
     EMAIL_REQUIRED("El correo es obligatorio."),
     EMAIL_INVALID("El correo electrónico no tiene un formato válido."),
     PASSWORD_REQUIRED("La contraseña es obligatoria."),
     REGEX_VALID_EMAIL("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"),
+    ROLE_REQUIRED("El rol es obligatorio."),
     USER_NOT_FOUND_BY_EMAIL_MESSAGE ("No se encontró un usuario con el correo electrónico proporcionado.");
 
 

@@ -1,9 +1,0 @@
-com\personalsoft\btgfund\com\api_java\domain\ports\output\IUserAdapter.class
-com\personalsoft\btgfund\com\api_java\ApiJavaApplication.class
-com\personalsoft\btgfund\com\api_java\infraestructure\output\dynamodb\repositories\UsersRepositories.class
-com\personalsoft\btgfund\com\api_java\infraestructure\output\dynamodb\entities\Users.class
-com\personalsoft\btgfund\com\api_java\infraestructure\configuration\BeanConfiguration.class
-com\personalsoft\btgfund\com\api_java\infraestructure\output\dynamodb\mapper\UsersEntityMapperImpl.class
-com\personalsoft\btgfund\com\api_java\domain\model\UsersModel.class
-com\personalsoft\btgfund\com\api_java\infraestructure\output\dynamodb\mapper\UsersEntityMapper.class
-com\personalsoft\btgfund\com\api_java\infraestructure\output\dynamodb\adapter\UserAdapter.class

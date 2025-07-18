@@ -22,6 +22,10 @@ public class ResponseMapper {
                 .build();
     }
 
+    public static SuccessResponseDTO buildSuccess(String message){
+      return  buildSuccess(message, null);
+    }
+
     public static ErrorResponseDTO buildError(String message, String error) {
         return ErrorResponseDTO.builder()
                 .message(message)

@@ -1,16 +1,31 @@
 package com.personalsoft.btgfund.com.api_java.infraestructure.output.dynamodb.mapper;
 
 import com.personalsoft.btgfund.com.api_java.domain.model.UsersModel;
-import com.personalsoft.btgfund.com.api_java.infraestructure.output.dynamodb.entities.Users;
-import org.mapstruct.*;
+import com.personalsoft.btgfund.com.api_java.infraestructure.output.dynamodb.entities.UserEntity;
 
+public class UsersEntityMapper {
 
-@Mapper(componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        unmappedSourcePolicy = ReportingPolicy.IGNORE
-)
-public interface UsersEntityMapper {
+    private UsersEntityMapper() {
+    }
 
-    Users toEntity(UsersModel model);
-    UsersModel toModel(Users users);
+    public static UserEntity toEntity(UsersModel model){
+
+        return UserEntity.builder()
+                .userId(model.getUserId())
+                .email(model.getEmail())
+                .password(model.getPassword())
+                .role(model.getRole())
+                .build();
+
+    }
+    public static UsersModel toModel(UserEntity userEntity){
+
+        return UsersModel.builder()
+                .userId(userEntity.getUserId())
+                .email(userEntity.getEmail())
+                .password(userEntity.getPassword())
+                .role(userEntity.getRole())
+                .build();
+
+    }
 }

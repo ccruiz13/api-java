@@ -9,6 +9,7 @@ import com.personalsoft.btgfund.com.api_java.domain.ports.output.IPasswordAdapte
 import com.personalsoft.btgfund.com.api_java.domain.ports.output.IUserAdapter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
@@ -19,7 +20,11 @@ public class UsersUseCase implements IUserService {
 
     @Override
     public void createUser(UsersModel model) {
-
+        userField(model);
+        String userId = UUID.randomUUID().toString();
+        model.setUserId(userId);
+        model.setPassword(passwordAdapter.encryptPassword(model.getPassword()));
+        userAdapter.saveUser(model);
     }
 
     @Override
@@ -46,6 +51,29 @@ public class UsersUseCase implements IUserService {
 
         if (isNullOrEmpty(password)) {
             throw new UserDomainException(ValidationMessage.PASSWORD_REQUIRED.getMessage());
+        }
+    }
+
+    private void userField(UsersModel model) {
+
+
+        if (isNullOrEmpty(model.getEmail())) {
+            throw new UserDomainException(ValidationMessage.EMAIL_REQUIRED.getMessage());
+        }
+
+        if (!isValidEmail(model.getEmail())) {
+            throw new UserDomainException(ValidationMessage.EMAIL_INVALID.getMessage());
+        }
+
+        if (userAdapter.getByEmail(model.getEmail()) != null) {
+            throw new UserDomainException(ValidationMessage.EMAIL_ALREADY_EXISTS.getMessage());
+        }
+
+        if (isNullOrEmpty(model.getPassword())) {
+            throw new UserDomainException(ValidationMessage.PASSWORD_REQUIRED.getMessage());
+        }
+        if (isNullOrEmpty(model.getRole())) {
+            throw new UserDomainException(ValidationMessage.ROLE_REQUIRED.getMessage());
         }
     }
 

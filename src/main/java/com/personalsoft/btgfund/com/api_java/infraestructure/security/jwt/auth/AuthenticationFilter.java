@@ -20,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -30,7 +32,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-@RequiredArgsConstructor
+
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -39,6 +41,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private static final String IDUSER = "idUser";
     private static final String ROLE = "role";
     private static final String USERNAME = "username";
+
+    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+        super.setAuthenticationManager(authenticationManager);
+        setFilterProcessesUrl("/users/login");
+    }
 
     public Authentication authenticateUser(String email, String password) throws AuthenticationException {
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -79,8 +87,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
             LoginDTO user = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
             return authenticateUser(user.getEmail(), user.getPassword());
-        } catch (IOException e) {
-            throw new NoDataFoundException(MessagesResponse.INVALID_CREDENTIALS_ERROR.getMessage(), e);
+        } catch (IOException | AuthenticationException e) {
+            throw new BadCredentialsException(MessagesResponse.INVALID_CREDENTIALS_ERROR.getMessage(), e);
+        }catch (Exception e) {
+            throw new InternalAuthenticationServiceException(MessagesResponse.UNEXPECTED_LOGIN_ERROR_MESSAGE.getMessage(), e);
         }
     }
 

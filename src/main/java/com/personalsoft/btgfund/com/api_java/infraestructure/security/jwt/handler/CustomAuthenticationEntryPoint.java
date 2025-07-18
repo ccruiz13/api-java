@@ -16,7 +16,12 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        ResponseUtils.write(response, ResponseMapper.buildError(MessagesResponse.INVALID_TOKEN_ERROR.getMessage(),request.getRequestURI()), HttpStatus.FORBIDDEN.value());
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException{
+        ResponseUtils.write(
+                response,
+                ResponseMapper.buildError(MessagesResponse.INVALID_CREDENTIALS_ERROR.getMessage(), request.getRequestURI()),
+                HttpStatus.UNAUTHORIZED.value()
+        );
     }
+
 }
