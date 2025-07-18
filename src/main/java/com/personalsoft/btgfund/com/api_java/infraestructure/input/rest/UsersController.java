@@ -8,6 +8,7 @@ import com.personalsoft.btgfund.com.api_java.infraestructure.commons.constants.E
 import com.personalsoft.btgfund.com.api_java.infraestructure.commons.constants.MessagesResponse;
 import com.personalsoft.btgfund.com.api_java.infraestructure.commons.mapper.ResponseMapper;
 import com.personalsoft.btgfund.com.api_java.infraestructure.commons.utils.ResponseUtils;
+import com.personalsoft.btgfund.com.api_java.infraestructure.exception.CustomUnauthorizedException;
 import com.personalsoft.btgfund.com.api_java.infraestructure.input.response.ErrorResponseDTO;
 import com.personalsoft.btgfund.com.api_java.infraestructure.input.response.SuccessResponseDTO;
 import com.personalsoft.btgfund.com.api_java.infraestructure.security.jwt.TokenJwtConfig;
@@ -18,13 +19,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = OpenApiConstants.TAG_USERS_NAME, description = OpenApiConstants.TAG_DESCRIPTION)
 @RestController
@@ -70,6 +69,28 @@ public class UsersController {
                                                     @RequestBody  UsersDTO usersDTO) {
         userHandler.saveUsers(usersDTO);
         return ResponseUtils.apiResponses(ResponseMapper.buildSuccess(MessagesResponse.CREATE_USER__SUCCESS_MESSAGE.getMessage()), HttpStatus.OK);
+    }
+
+    @GetMapping(EndPointApi.DECODE)
+    @Operation(summary = OpenApiConstants.DECODE_SUMMARY, description = OpenApiConstants.DECODE_DESCRIPTION)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = OpenApiConstants.HTTP_200, description = OpenApiConstants.RESPONSE_200,
+                    content = @Content(schema = @Schema(implementation = SuccessResponseDTO.class))),
+            @ApiResponse(responseCode = OpenApiConstants.HTTP_400, description = OpenApiConstants.RESPONSE_400,
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = OpenApiConstants.HTTP_401, description = OpenApiConstants.RESPONSE_401,
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
+            @ApiResponse(responseCode = OpenApiConstants.HTTP_500, description = OpenApiConstants.RESPONSE_500,
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    public ResponseEntity<SuccessResponseDTO> decode(HttpServletRequest request) {
+
+        String authHeader  = request.getHeader(TokenJwtConfig.HEADER_AUTHORIZATION);
+        if (authHeader == null || !authHeader.startsWith(TokenJwtConfig.PREFIX_TOKEN)) {
+            throw new CustomUnauthorizedException(MessagesResponse.INVALID_TOKEN_ERROR.getMessage());
+        }
+        String token = authHeader.replace(TokenJwtConfig.PREFIX_TOKEN, "").trim();
+        return ResponseUtils.apiResponses(ResponseMapper.buildSuccess(MessagesResponse.LOGIN_SUCCESS_MESSAGE.getMessage(), userHandler.decode(token)), HttpStatus.OK);
     }
 
 }

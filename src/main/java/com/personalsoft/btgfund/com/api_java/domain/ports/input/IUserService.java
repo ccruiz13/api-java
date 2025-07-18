@@ -8,4 +8,6 @@ public interface IUserService {
     void createUser(UsersModel model);
 
     LoginResponseModel login(String email, String password);
+
+    UsersModel decode(String token);
 }

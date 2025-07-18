@@ -37,6 +37,11 @@ public class UsersUseCase implements IUserService {
         return userAdapter.authenticate(email, password);
     }
 
+    @Override
+    public UsersModel decode(String token) {
+        return userAdapter.decodeToken(token);
+    }
+
     private void loginField(String email, String password) {
 
 

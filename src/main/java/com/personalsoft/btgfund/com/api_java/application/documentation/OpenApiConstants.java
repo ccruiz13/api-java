@@ -37,6 +37,9 @@ public class OpenApiConstants {
     public static final String CREATE_USER_DESCRIPTION = "Permite crear un nuevo usuario con los datos proporcionados.";
     public static final String CREATE_USER_REQUEST = "Datos requeridos para registrar un nuevo usuario.";
 
+    public static final String DECODE_SUMMARY = "Valida el token";
+    public static final String DECODE_DESCRIPTION = "Decodifica el token para validar que esta correcto";
+
 
 
     private OpenApiConstants() {

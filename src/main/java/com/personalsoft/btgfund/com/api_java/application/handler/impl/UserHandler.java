@@ -3,6 +3,7 @@ package com.personalsoft.btgfund.com.api_java.application.handler.impl;
 import com.personalsoft.btgfund.com.api_java.application.dto.request.LoginDTO;
 import com.personalsoft.btgfund.com.api_java.application.dto.request.UsersDTO;
 import com.personalsoft.btgfund.com.api_java.application.dto.response.LoginDTOResponse;
+import com.personalsoft.btgfund.com.api_java.application.dto.response.UserDTOResponse;
 import com.personalsoft.btgfund.com.api_java.application.handler.IUserHandler;
 import com.personalsoft.btgfund.com.api_java.application.mapper.LoginResponseMapper;
 import com.personalsoft.btgfund.com.api_java.application.mapper.UsersRequestMapper;
@@ -25,5 +26,10 @@ public class UserHandler implements IUserHandler {
     public void saveUsers(UsersDTO usersDTO) {
         UsersModel model = UsersRequestMapper.toModel(usersDTO);
         userService.createUser(model);
+    }
+
+    @Override
+    public UserDTOResponse decode(String token) {
+        return LoginResponseMapper.userDTOResponse(userService.decode(token));
     }
 }

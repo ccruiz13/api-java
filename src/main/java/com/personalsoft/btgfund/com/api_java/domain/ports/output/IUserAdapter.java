@@ -8,4 +8,5 @@ public interface IUserAdapter {
     UsersModel saveUser(UsersModel user);
     UsersModel  getByEmail(String email);
     LoginResponseModel authenticate(String email, String password);
+    UsersModel decodeToken(String token);
 }
