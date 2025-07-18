@@ -17,7 +17,7 @@ public class ResponseUtils {
     private ResponseUtils() {
     }
 
-    public static <T> ResponseEntity<T> apiResponses(String message, T responseBody, HttpStatus status) {
+    public static <T> ResponseEntity<T> apiResponses(T responseBody, HttpStatus status) {
         return new ResponseEntity<>(responseBody, status);
     }
 
