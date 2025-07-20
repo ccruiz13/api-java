@@ -10,7 +10,5 @@ aws:
   dynamodb:
     table-name: ${DYNAMO_USER_TABLE}
 
-
-
 appDescripcion: Api para crear usuarios con sus respectivos roles
 appVersion: 1.0.0
