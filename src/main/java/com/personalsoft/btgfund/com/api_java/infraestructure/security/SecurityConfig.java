@@ -32,15 +32,21 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     private static final String[] WHITE_LIST_URL = {
-            EndPointApi.LOGIN,
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/webjars/**",
             "/configuration/**",
-            EndPointApi.BASE_URL + "/**"
+            "/java/swagger-ui/**",
+            "/java/swagger-ui.html",
+            "/java/v3/api-docs/**",
+            "/java/swagger-resources/**",
+            "/java/webjars/**",
+            "/java/configuration/**",
+            "/java/users/**"
     };
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
